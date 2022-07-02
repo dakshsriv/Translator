@@ -3,10 +3,14 @@ from pygame import mixer
 from google.cloud import texttospeech
 from google.cloud import texttospeech_v1
 
-def speak(text):
+def repeat(response):
+	x = mixer.music.Sound(response)
+	mixer.play(x)
+
+def speak(text, lang):
 	mixer.init()
 
-	os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'modified-keep-352519-6f1cc9c75c52.json'
+	os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/ubuntu/Translator/modified-keep-352519-6f1cc9c75c52.json'
 	client = texttospeech_v1.TextToSpeechClient()
 
 	synthesis_input = texttospeech_v1.SynthesisInput(text=text)
@@ -15,7 +19,10 @@ def speak(text):
 		language_code="en-ca",
 		ssml_gender=texttospeech_v1.SsmlVoiceGender.MALE
 	)
-
+	if lang == "en":
+		voice = texttospeech_v1.VoiceSelectionParams(
+		language_code="fr-FR",
+		ssml_gender=texttospeech_v1.SsmlVoiceGender.MALE)
 	audio_config = texttospeech_v1.AudioConfig(
 		audio_encoding=texttospeech_v1.AudioEncoding.MP3
 	)
@@ -28,10 +35,10 @@ def speak(text):
 	)
 
 	#print(help(texttospeech.AudioConfig()))
-	with open('synthesized_audio.mp3', 'wb') as output:
+	with open('/home/ubuntu/Translator/synthesized_audio.mp3', 'wb') as output:
 		output.write(response.audio_content)
 
-	mixer.music.load("synthesized_audio.mp3")
+	mixer.music.load("/home/ubuntu/Translator/synthesized_audio.mp3")
 	mixer.music.set_volume(0.7)
 	mixer.music.play()
 	time.sleep(5)

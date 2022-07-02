@@ -1,19 +1,21 @@
 from __future__ import division
 import re
-from main import run
+from translate import run
 import sys
-
+import os
 from google.cloud import speech
-
+from speak import speak
 import pyaudio
 from six.moves import queue
+
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/ubuntu/Translator/modified-keep-352519-6f1cc9c75c52.json'
 
 # Audio recording parameters
 RATE = 44100
 CHUNK = int(RATE / 10)  # 100ms
 
 first_lang="fr-FR"
-second_lang="uk"
+second_lang="en-CA"
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
 
@@ -119,24 +121,29 @@ def listen_print_loop(responses):
         overwrite_chars = " " * (num_chars_printed - len(transcript))
 
         if not result.is_final:
-            sys.stdout.write(transcript + overwrite_chars + "\r")
+            sys.stdout.write('Translated text: ' + transcript + overwrite_chars + "\r")
             sys.stdout.flush()
 
             num_chars_printed = len(transcript)
 
         else:
-            print(transcript + overwrite_chars)
+#            speak('This is what I heard: ' + transcript + overwrite_chars)
+            print('This is what I heard: ' + transcript + overwrite_chars)
             run(transcript+overwrite_chars)
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
             if re.search(r"\b(exit|quit)\b", transcript, re.I):
-                print("Exiting..")
+                print("--- ***   Exiting based on user request...")
                 break
+
+            print("--- ***   Exiting after one translation...")
+            break
 
             num_chars_printed = 0
 
 
 def main():
+    ''' Main work loop '''
     # See http://g.co/cloud/speech/docs/languages
     # for a list of supported languages.
     language_code = "fr-FR"  # a BCP-47 language tag
@@ -152,6 +159,9 @@ def main():
     streaming_config = speech.StreamingRecognitionConfig(
         config=config, interim_results=True
     )
+    speak("I am ready", lang="prep")
+    print("--- ***   I am ready Dash")
+
     with MicrophoneStream(RATE, CHUNK) as stream:
         audio_generator = stream.generator()
         requests = (
@@ -160,11 +170,23 @@ def main():
         )
 
         responses = client.streaming_recognize(streaming_config, requests)
-
         # Now, put the transcription responses to use.
-        listen_print_loop(responses)
+        try:
+            listen_print_loop(responses)
+        except:
+            speak("I crashed")
+            print("--- ***   I crashed")
+            return
 
 
 if __name__ == "__main__":
+
+    import sys
+
+    print('--- ***   Started listener')
+    if len(sys.argv)> 1 and sys.argv[1] == 'firsttime':
+        print('--- ***   Early exit')
+        sys.exit()
+
     main()
 
