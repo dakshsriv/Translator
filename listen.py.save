@@ -1,3 +1,5 @@
+
+
 from __future__ import division
 import re
 from translate import run
@@ -14,8 +16,8 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/ubuntu/Translator/translat
 RATE = 44100
 CHUNK = int(RATE / 10)  # 100ms
 
-first_lang="en-US"
-second_lang="uk"
+first_lang="uk"
+second_lang="en-CA"
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
 
@@ -84,7 +86,9 @@ class MicrophoneStream(object):
             yield b"".join(data)
 
 
-def listen_print_loop(responses):
+def list
+
+en_print_loop(responses):
     """Iterates through server responses and prints them.
 
     The responses passed is a generator that will block until a response
@@ -129,10 +133,6 @@ def listen_print_loop(responses):
         else:
 #            speak('This is what I heard: ' + transcript + overwrite_chars)
             print('This is what I heard: ' + transcript + overwrite_chars)
-            txt = transcript+overwrite_chars
-            txt = txt.lower()
-            txtx = txt.split()
-            print(txtx)
             run(transcript+overwrite_chars)
             # Exit recognition if any of the transcribed phrases could be
             # one of our keywords.
@@ -150,7 +150,7 @@ def main():
     ''' Main work loop '''
     # See http://g.co/cloud/speech/docs/languages
     # for a list of supported languages.
-    language_code = "en-US"  # a BCP-47 language tag
+    language_code = "fr-FR"  # a BCP-47 language tag
 
     client = speech.SpeechClient()
     config = speech.RecognitionConfig(
@@ -192,6 +192,5 @@ if __name__ == "__main__":
         print('--- ***   Early exit')
         sys.exit()
 
-    while True:
-        main()
+    main()
 

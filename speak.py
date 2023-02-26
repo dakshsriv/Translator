@@ -10,7 +10,7 @@ def repeat(response):
 def speak(text, lang):
 	mixer.init()
 
-	os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/ubuntu/Translator/modified-keep-352519-6f1cc9c75c52.json'
+	os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/ubuntu/Translator/translator-378115-8e87c6b909b1.json'
 	client = texttospeech_v1.TextToSpeechClient()
 
 	synthesis_input = texttospeech_v1.SynthesisInput(text=text)
@@ -21,7 +21,7 @@ def speak(text, lang):
 	)
 	if lang == "en":
 		voice = texttospeech_v1.VoiceSelectionParams(
-		language_code="fr-FR",
+		language_code="uk",
 		ssml_gender=texttospeech_v1.SsmlVoiceGender.MALE)
 	audio_config = texttospeech_v1.AudioConfig(
 		audio_encoding=texttospeech_v1.AudioEncoding.MP3
