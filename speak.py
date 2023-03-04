@@ -10,7 +10,7 @@ def repeat(response):
 def speak(text, lang):
 	mixer.init()
 
-	os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/ubuntu/Translator/translator-378115-8e87c6b909b1.json'
+	os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/ubuntu/Translator/translator-379621-c75b6aa8a77a.json'
 	client = texttospeech_v1.TextToSpeechClient()
 
 	synthesis_input = texttospeech_v1.SynthesisInput(text=text)

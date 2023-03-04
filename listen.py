@@ -8,7 +8,7 @@ from speak import speak
 import pyaudio
 from six.moves import queue
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/ubuntu/Translator/translator-378115-8e87c6b909b1.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/home/ubuntu/Translator/translator-379621-c75b6aa8a77a.json'
 
 # Audio recording parameters
 RATE = 44100
